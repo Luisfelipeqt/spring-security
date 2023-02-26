@@ -4,8 +4,11 @@ import java.util.List;
 
 import br.com.treinaweb.twprojetos.serialization.converter.YamlJackson2HttpMesageConverter;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -34,7 +37,5 @@ public class  WebConfig implements WebMvcConfigurer{
                 .mediaType("x-yaml", MEDIA_TYPE_APPLICATION_YML)
         ;
     }
-
-    
 
 }

@@ -1,5 +1,6 @@
 package br.com.treinaweb.twprojetos.controles;
 
+import br.com.treinaweb.twprojetos.util.SenhaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ public class FuncionarioControle {
 
     @Autowired
     private FuncionarioRepositorio funcionarioRepositorio;
+
 
     @Autowired
     private CargoRepositorio cargoRepositorio;
@@ -63,12 +65,22 @@ public class FuncionarioControle {
         return modelAndView;
     }
 
-    @PostMapping({"/cadastrar", "/{id}/editar"})
-    public String salvar(Funcionario funcionario) {
+    @PostMapping("/cadastrar")
+    public String cadastrar(Funcionario funcionario) {
+        String senhaEncriptada = SenhaUtil.encode(funcionario.getSenha());
+        funcionario.setSenha(senhaEncriptada);
         funcionarioRepositorio.save(funcionario);
 
         return "redirect:/funcionarios";
     }
+
+    @PostMapping("/{id}editar")
+    public String editar(Funcionario funcionario, @PathVariable Long id){
+        String senhaAtual = funcionarioRepositorio.getOne(id).getSenha();
+        funcionario.setSenha(senhaAtual);
+        funcionarioRepositorio.save(funcionario);
+        return "redirect:/funcionarios";
+    };
 
     @GetMapping("/{id}/excluir")
     public String excluir(@PathVariable Long id) {
@@ -76,5 +88,6 @@ public class FuncionarioControle {
 
         return "redirect:/funcionarios";
     }
+
     
 }
